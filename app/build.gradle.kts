@@ -1,3 +1,5 @@
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -54,6 +56,7 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
+
     implementation(libs.okhttp.logging)
     implementation(libs.moshi.kotlin)
     testImplementation(libs.junit)
