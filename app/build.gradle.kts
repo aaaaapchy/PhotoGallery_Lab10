@@ -1,10 +1,10 @@
-
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)  // ← Применяем KSP с правильной версией
 }
+
 
 android {
     namespace = "com.example.photogallery_lab10"
@@ -31,22 +31,23 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
+
     buildFeatures {
         compose = true
     }
-}
 
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+}
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.coil.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
@@ -56,9 +57,13 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
-
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
     implementation(libs.okhttp.logging)
     implementation(libs.moshi.kotlin)
+
+
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.2")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
