@@ -15,4 +15,14 @@ interface PhotoApi {
             @Query("page") page: Int = 1,
             @Query("extras") extras: String = "url_s"
     ): Call<FlickrResponse>
+
+    @GET("services/rest/")
+    fun searchPhotos(
+        @Query("method") method: String = "flickr.photos.search",
+        @Query("api_key") apiKey: String,
+        @Query("text") text: String,
+        @Query("format") format: String = "json",
+        @Query("nojsoncallback") noJsonCallback: Int = 1,
+        @Query("per_page") perPage: Int = 100
+    ): Call<FlickrResponse>
 }

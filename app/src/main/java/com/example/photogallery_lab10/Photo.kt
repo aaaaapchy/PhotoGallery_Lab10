@@ -30,3 +30,16 @@ data class Photo(
     fun imageUrl(): String =
         "https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg"
 }
+
+@JsonClass(generateAdapter = true)
+data class Photos(
+    @Json(name = "photo")
+    val photo: List<Photo> = emptyList()
+)
+
+@JsonClass(generateAdapter = true)
+data class FlickrResponse(
+    @Json(name = "photos")
+    val photos: Photos,
+    @Json(name = "stat") val stat: String = ""
+)

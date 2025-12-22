@@ -2,15 +2,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)  // ← Применяем KSP с правильной версией
+    alias(libs.plugins.ksp)
 }
-
 
 android {
     namespace = "com.example.photogallery_lab10"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.photogallery_lab10"
@@ -32,44 +29,67 @@ android {
         }
     }
 
-
     buildFeatures {
         compose = true
     }
 
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
-        }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
+    kotlin {
+        jvmToolchain(17)
     }
 }
+
 dependencies {
+    // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.coil.compose)
+
+    // Compose BOM + Compose libraries
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
-    implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation("androidx.compose.material:material-icons-extended")
+
+    // Coil для изображений
+    implementation(libs.coil.compose)
+
+    // Coroutines
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
+
+    // Retrofit + Moshi
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
     implementation(libs.okhttp.logging)
     implementation(libs.moshi.kotlin)
 
+    // Lifecycle ViewModel для Compose
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.compose.foundation)
+    ksp(libs.androidx.room.room.compiler)
+
+    // Moshi codegen
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.2")
 
+    // Тесты
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
+    // Debug
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
